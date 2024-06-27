@@ -6,7 +6,8 @@ export const useGenerated = (prompt: string) => {
   const imageQuery = useQuery({
     queryKey: ['generatedImage', prompt],
     queryFn: () => generateImage(prompt),
-    enabled: false
+    enabled: false,
+    staleTime: Infinity,
   });
 
   return imageQuery;

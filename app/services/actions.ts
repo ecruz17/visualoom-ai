@@ -1,23 +1,11 @@
-// const apiUrl = 'https://dgxhimhvak.execute-api.us-east-1.amazonaws.com/Dev/imageGeneratorAPI?prompt=';
-const testUrl = 'https://picsum.photos/id/';
+import { Generation } from "@/interfaces/Generation";
+import axios from "axios";
 
-export const generateImage = async (prompt: string) => {
-  try {
-    const response = await fetch(testUrl + prompt + '/300/300', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+const apiUrl = 'https://dgxhimhvak.execute-api.us-east-1.amazonaws.com/Dev/imageGeneratorAPI?prompt=';
+// const testUrl = 'https://picsum.photos/id/';
 
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status} ${response.statusText}`);
-    }
-
-    const url = response.url;
-    return url;
-  } catch (error) {
-    console.error('Fetch error:', error);
-    throw error;
-  }
-};
+export const generateImage = async (prompt: string) => { 
+  const response = await axios.get(apiUrl + prompt);
+  const backRes: Generation = response.data;
+  return backRes;
+}

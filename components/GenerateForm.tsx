@@ -9,17 +9,21 @@ import { Textarea } from './Textarea'
 import { useGenerated } from '@/hooks/useGenerated'
 import { useQueryClient } from '@tanstack/react-query'
 import { ImageLoader } from './ImageLoader'
+import { ErrorMsg } from './ErrorMsg'
 
 export const GenerateForm = () => {
   const [content, setContent] = useState<string>('');
 
   const imageQuery = useGenerated(content);
+
   const queryClient = useQueryClient();
 
   const handleReset = () => {
     setContent('');
     queryClient.removeQueries();
   }
+
+  const handleGenerate = () => imageQuery.refetch();
 
   return (
     <>
@@ -34,7 +38,7 @@ export const GenerateForm = () => {
         <Button
           title='Generate'
           isSecondary={false}
-          onClicked={() => imageQuery.refetch()}
+          onClicked={handleGenerate}
           isLoading={imageQuery.isFetching}
         />
         <Button
@@ -45,9 +49,15 @@ export const GenerateForm = () => {
   
       <div className='mt-8'>
         {
-          imageQuery.isFetching
-            ? (<ImageLoader />)
-            : imageQuery.data && (<ImageContainer url={imageQuery.data} />)
+          imageQuery.isFetching && (<ImageLoader />)
+        }
+        {
+          imageQuery.isError && (<ErrorMsg>{imageQuery.error.message}</ErrorMsg>)
+        }
+        {
+          imageQuery.data?.statusCode === 429
+            ? (<ErrorMsg>{imageQuery.data.body as string}</ErrorMsg>)
+            : imageQuery.data && (<ImageContainer url={imageQuery.data.body} />)
         }
       </div>
     </>
