@@ -27,14 +27,14 @@ export const GenerateForm = () => {
 
   return (
     <>
-    <div className='my-2'>
+      <div className='my-2 flex gap-4 justify-center'>
         <Textarea
           content={content}
           setContent={setContent}
         />
       </div>
       
-    <div className='flex mt-4 gap-4'>
+    <div className='flex mt-4 gap-4 justify-center'>
         <Button
           title='Generate'
           isSecondary={false}
@@ -47,17 +47,19 @@ export const GenerateForm = () => {
         />
       </div>
   
-      <div className='mt-8'>
+      <div className='mt-8 flex flex-col justify-center items-center gap-4'>
         {
           imageQuery.isFetching && (<ImageLoader />)
         }
         {
-          imageQuery.isError && (<ErrorMsg>{imageQuery.error.message}</ErrorMsg>)
+          imageQuery.isError
+            ? (<ErrorMsg>{imageQuery.error.message}</ErrorMsg>)
+            : (<></>)
         }
         {
-          imageQuery.data?.statusCode === 429
-            ? (<ErrorMsg>{imageQuery.data.body as string}</ErrorMsg>)
-            : imageQuery.data && (<ImageContainer url={imageQuery.data.body} />)
+          imageQuery.data?.statusCode !== 200
+            ? (<ErrorMsg>{imageQuery.data?.body as string}</ErrorMsg>)
+            : imageQuery.data && (<ImageContainer isLoading={imageQuery.isLoading} url={imageQuery.data.body} prompt={content} />)
         }
       </div>
     </>

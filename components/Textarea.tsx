@@ -28,7 +28,7 @@ export const Textarea = ({ content , setContent}: Props) => {
   return (
     <textarea
       ref={textareaRef}
-      className='p-2 min-h-10 w-[13rem] md:w-[19rem] text-start rounded-lg text-slate-800 shadow-lg focus:outline-none focus:ring focus:ring-slate-500 duration-100'
+      className='p-2 min-h-10 w-[13rem] md:w-[19rem] text-start text-sm md:text-base rounded-lg text-slate-800 shadow-lg focus:outline-none focus:ring focus:ring-slate-500 duration-100'
       placeholder='Enter your prompt'
       value={content}
       onChange={handleChange}
