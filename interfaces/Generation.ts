@@ -1,4 +1,4 @@
 export interface Generation {
-  statusCode: number;
-  body: string;
+  status: number;
+  data: string;
 }

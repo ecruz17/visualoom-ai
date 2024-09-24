@@ -25,6 +25,7 @@ export const GenerateForm = () => {
 
   const handleGenerate = () => imageQuery.refetch();
 
+
   return (
     <>
       <div className='my-2 flex gap-4 justify-center'>
@@ -53,13 +54,14 @@ export const GenerateForm = () => {
         }
         {
           imageQuery.isError
-            ? (<ErrorMsg>{imageQuery.error.message}</ErrorMsg>)
-            : (<></>)
+          ? (<ErrorMsg>{imageQuery.error.message}</ErrorMsg>)
+          : (<></>)
         }
+        
         {
-          imageQuery.data?.statusCode !== 200
-            ? (<ErrorMsg>{imageQuery.data?.body as string}</ErrorMsg>)
-            : imageQuery.data && (<ImageContainer isLoading={imageQuery.isLoading} url={imageQuery.data.body} prompt={content} />)
+          imageQuery.data?.status !== 200
+            ? (<ErrorMsg>{imageQuery.data}</ErrorMsg>)
+            : imageQuery.data && (<ImageContainer isLoading={imageQuery.isLoading} url={imageQuery.data.data} prompt={content} />)
         }
       </div>
     </>
